@@ -18,7 +18,7 @@ const heatmapData = clients.map((client) => ({
   changes: Array(12).fill(0).map(() => parseFloat(generateRandomChange())),
 }));
 
-const getColor = (value) => {
+const getColor = (value: number) => {
   if (value > 10) return "btn-success brightness-150";
   if (value > 5) return "btn-success brightness-100";
   if (value > 0) return "btn-success brightness-50";
@@ -32,7 +32,7 @@ const getColor = (value) => {
 //Generated from AI with adjustments to make it look nicer
 //Will most likely be replaced with a real component before adding it to the app
 const Heatmap = () => {
-  const handleClick = (client, month, value) => {
+  const handleClick = (client: string, month: string, value: number) => {
     alert(`Clicked: ${client} - ${month}: ${value.toFixed(1)}%`);
     // Replace with real action, e.g., router.push(`/client/${client}/${month}`);
   };
@@ -82,7 +82,7 @@ const Heatmap = () => {
                     <button
                       className={`btn w-20 h-20 rounded-none ${getColor(change)}`}
                       onClick={() =>
-                        handleClick(row.client, months[colIndex], change)
+                        handleClick(row.client, months[colIndex] as string, change)
                       }
                     >
                       {change.toFixed(1)}%

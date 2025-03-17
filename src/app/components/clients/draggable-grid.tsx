@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { MouseEvent, useRef, useState } from "react";
+
+interface DraggableGridProps {
+  onItemClick?: (item: string) => void;
+}
 
 //Mockup of a component that displays a draggable grid with clickable buttons
 //Generated from AI, I have not adjusted it and it does not look very good right now
 //Will most likely be replaced with a real component before adding it to the app (I want to use it for the heatmap)
-const DraggableGridWithClick = () => {
-  const containerRef = useRef(null);
+const DraggableGridWithClick = ({ onItemClick } : DraggableGridProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -15,7 +19,9 @@ const DraggableGridWithClick = () => {
   const DRAG_THRESHOLD = 5; // Pixels moved before considering it a drag
 
   // Start dragging
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
     setIsDragging(true);
     setStartX(e.pageX - containerRef.current.offsetLeft);
     setScrollLeft(containerRef.current.scrollLeft);
@@ -24,8 +30,10 @@ const DraggableGridWithClick = () => {
   };
 
   // Move while dragging
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
     if (!isDragging) return;
+
     e.preventDefault();
     const x = e.pageX - containerRef.current.offsetLeft;
     const walk = x - startX;
@@ -37,12 +45,14 @@ const DraggableGridWithClick = () => {
 
   // Stop dragging
   const handleMouseUp = () => {
+    if (!containerRef.current) return;
+    
     setIsDragging(false);
     containerRef.current.style.cursor = "grab";
   };
 
   // Handle button click
-  const handleButtonClick = (item) => {
+  const handleButtonClick = (item: string) => {
     if (dragDistance <= DRAG_THRESHOLD) {
       alert(`Clicked: ${item}`); // Only fires if not dragged
     }
