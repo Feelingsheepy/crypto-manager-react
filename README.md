@@ -2,6 +2,10 @@
 
 Built using React and NextJS
 
+Hosted at: https://crypto-manager-react.vercel.app/
+
+Backend is in CloudFlare workers
+
 ## How to run locally
 
 ### Frontend
